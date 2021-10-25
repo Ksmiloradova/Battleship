@@ -3,8 +3,6 @@ package battleship;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static battleship.Field.N;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -13,9 +11,10 @@ public class Main {
             int min = -1, N = 1, M = 1, n5 = 0, n4 = 0, n3 = 0, n2 = 0, n1 = 0;
             try {
                 Field.getGameParameters(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
-                        Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]),
-                        Integer.parseInt(args[5]), Integer.parseInt(args[6]));
-                if (!Field.randomStandShips()) {
+                        Integer.parseInt(args[2]), Integer.parseInt(args[3]),
+                        Integer.parseInt(args[4]), Integer.parseInt(args[5]),
+                        Integer.parseInt(args[6]));
+                if (!Field.randomStandShipsForUser()) {
                     System.out.println("Computer is not able to arrange the Fleet in the Ocean.\n" +
                             "Please to re-enter these parameters or quit the game");
                     throw new Exception();
@@ -44,12 +43,14 @@ public class Main {
                         n1 = in.nextInt();
                     } catch (Exception ignored) {
                     }
-                    min = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(M, N), n1), n2), n3), n4), n5);
+                    min = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(M, N),
+                            n1), n2), n3), n4), n5);
                     if (min >= 0 || M > 0 || N > 0) {
                         Field.getGameParameters(M, N, n5, n4, n3, n2, n1);
-                        isStandingSuccessful = Field.randomStandShips();
+                        isStandingSuccessful = Field.randomStandShipsForUser();
                         if (!isStandingSuccessful)
-                            System.out.println("Computer is not able to arrange the Fleet in the Ocean.\n" +
+                            System.out.println("Computer is not able to " +
+                                    "arrange the Fleet in the Ocean.\n" +
                                     "Please to re-enter these parameters or quit the game");
                     }
                 }
