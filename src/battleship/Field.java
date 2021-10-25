@@ -3,9 +3,9 @@ package battleship;
 import java.util.Random;
 
 public class Field {
-    static char missed = '•';
-    static char hitted = 'x';
-    static char[][] field;
+    static final char MISSED = '•';
+    static final char HITTED = 'x';
+    static Ship[][] field;
     static boolean[][] busyPlaces;
     private static boolean[][] notAvailableCells;
     static boolean[][] shotedPlaces;
@@ -18,11 +18,10 @@ public class Field {
     private static int numberOfSuccessfulHits = 0;
     private static int numberOfHits = 0;
 
-
     static public void getGameParameters(int m, int n, int n5, int n4, int n3, int n2, int n1) {
         M = m;
         N = n;
-        field = new char[M][N];
+        field = new Ship[M][N];
         busyPlaces = new boolean[M][N];
         shotedPlaces = new boolean[M][N];
         notAvailableCells = new boolean[M][N];
@@ -78,7 +77,7 @@ public class Field {
                     if (isOkey) {
                         for (int i = n; i < n + ship.getCellsNumber(); i++) {
                             busyPlaces[m][i] = true;
-
+                            field[m][i] = ship;
                             tryingSurroundingCells(m, i);
                         }
                     }
@@ -92,6 +91,7 @@ public class Field {
                     if (isOkey) {
                         for (int i = m; i < m + ship.getCellsNumber(); i++) {
                             busyPlaces[i][n] = true;
+                            field[i][n] = ship;
                             tryingSurroundingCells(i, n);
                         }
 
@@ -133,8 +133,8 @@ public class Field {
             System.out.print('|');
             for (int i = 0; i < field[0].length; i++) {
                 if (shotedPlaces[j][i]) {
-                    if (busyPlaces[j][i]) System.out.print(hitted);
-                    else System.out.print(missed);
+                    if (busyPlaces[j][i]) System.out.print(HITTED);
+                    else System.out.print(MISSED);
                 } else {
                     System.out.print(' ');
                 }
@@ -152,11 +152,15 @@ public class Field {
         int m = row - 1;
         int n = column - 1;
         if (n > -1 && n < N && m > -1 && m < M && !shotedPlaces[m][n]) {
+            System.out.println("\n++++++++++++++++++++++++++++++\n");
             shotedPlaces[m][n] = true;
             ++numberOfHits;
             if (busyPlaces[m][n]) {
                 ++numberOfSuccessfulHits;
-                System.out.println("hit");
+                field[m][n].shot();
+                if (field[m][n].isSunk())
+                    System.out.printf("You just have sunk a %s.\n", field[m][n].getClass().getSimpleName());
+                else System.out.println("hit");
             } else {
                 System.out.println("miss");
             }
@@ -167,7 +171,7 @@ public class Field {
 
     public static boolean isGameOver() {
         if (numberOfSuccessfulHits == numberOfBusyCells) {
-            System.out.printf("Game is over\nTotal number of the shots: %d\nBest number: %d\n", numberOfHits, numberOfBusyCells);
+            System.out.printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nGame is over\nTotal number of the shots: %d\nBest number: %d\n", numberOfHits, numberOfBusyCells);
             return true;
         }
         return false;
