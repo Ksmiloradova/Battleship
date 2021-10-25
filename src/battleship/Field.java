@@ -232,7 +232,7 @@ public class Field {
      */
     public static boolean isGameOver() {
         if (numberOfSuccessfulHits == numberOfBusyCells) {
-            System.out.printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nGame is over\n" +
+            System.out.printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nGame over\n" +
                             "Total number of the shots: %d\nBest number: %d\n",
                     numberOfHits, numberOfBusyCells);
             return true;
