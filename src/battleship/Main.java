@@ -58,5 +58,6 @@ public class Main {
             Field.Shot(r, c);
             Field.drowField();
         }
+        in.close();
     }
 }

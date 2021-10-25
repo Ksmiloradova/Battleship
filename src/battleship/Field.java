@@ -13,7 +13,7 @@ public class Field {
     static int N;
     static Ship[] fleet;
     private static int shipCounter;
-    private static final int attemptsNumber = 100;
+    private static final int ATTEMPTS_NUMBER = 100;
     private static int numberOfBusyCells = 0;
     private static int numberOfSuccessfulHits = 0;
     private static int numberOfHits = 0;
@@ -33,6 +33,7 @@ public class Field {
         addShip(n3, Cruiser.class);
         addShip(n2, Destroyer.class);
         addShip(n1, Submarine.class);
+        numberOfBusyCells = 0;
         for (Ship s : fleet) {
             numberOfBusyCells += s.getCellsNumber();
         }
@@ -54,14 +55,17 @@ public class Field {
         boolean isGorizontal;
         for (Ship ship : fleet) {
             boolean isOkey = false;
-            while (!isOkey && counter++ < attemptsNumber) {
+            while (!isOkey && counter++ < ATTEMPTS_NUMBER) {
                 int maxM = M, maxN = N;
                 isGorizontal = random.nextBoolean();
                 if (isGorizontal) maxN -= ship.getCellsNumber() - 1;
                 else maxM -= ship.getCellsNumber() - 1;
                 if (maxN < 0 || maxM < 0) continue;
-                m = random.nextInt(maxM);
-                n = random.nextInt(maxN);
+                int innerCounter = 0;
+                do {
+                    m = random.nextInt(maxM);
+                    n = random.nextInt(maxN);
+                } while (notAvailableCells[m][n] && ++innerCounter < ATTEMPTS_NUMBER);
                 /* Checks if the position is possible. */
                 isOkey = true;
                 if (isGorizontal) {
@@ -95,7 +99,9 @@ public class Field {
                 }
 
             }
-            if (counter >= attemptsNumber) return false;
+            if (counter >= ATTEMPTS_NUMBER) {
+                return false;
+            }
         }
         return true;
     }
