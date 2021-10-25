@@ -73,7 +73,6 @@ public class Field {
     static public boolean randomStandShipsForUser() {
         Random random = new Random();
         int counter = 0;
-        boolean isGorizontal;
         for (Ship ship : fleet) {
             boolean isOkey = false;
             while (!isOkey && counter++ < ATTEMPTS_NUMBER) {
